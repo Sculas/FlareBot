@@ -15,7 +15,7 @@ public class GitHubUtils {
     public static EmbedBuilder getEmbedForPR(String prNum) {
         JSONObject obj;
         try {
-            Response res = WebUtils.get(new Request.Builder().get().url("https://api.github.com/repos/FlareBot/FlareBot/pulls/" + prNum));
+            Response res = WebUtils.get(new Request.Builder().get().url("https://api.github.com/repos/Sculas/FlareBot/pulls/" + prNum));
             ResponseBody body = res.body();
 
             if (body != null) {

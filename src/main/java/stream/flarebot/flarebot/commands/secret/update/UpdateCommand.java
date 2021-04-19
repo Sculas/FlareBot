@@ -109,7 +109,7 @@ public class UpdateCommand implements InternalCommand {
             return;
         }
         try {
-            URL url = new URL("https://raw.githubusercontent.com/FlareBot/FlareBot/master/pom.xml");
+            URL url = new URL("https://raw.githubusercontent.com/Sculas/FlareBot/master/pom.xml");
             BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
             String line;
             while (true) {

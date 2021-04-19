@@ -25,7 +25,6 @@ public class CassandraController {
 
     public CassandraController(JSONConfig config) {
         Cluster.Builder builder = Cluster.builder().withClusterName("FlareBot Nodes")
-                .withCredentials(config.getString("cassandra.username").get(), config.getString("cassandra.password").get())
                 .withPoolingOptions(new PoolingOptions().setConnectionsPerHost(HostDistance.LOCAL, 2, 4).setConnectionsPerHost(HostDistance.REMOTE, 2, 4));
         config.getArray("cassandra.nodes").ifPresent(array -> array.forEach(ip -> builder.addContactPoint(ip.getAsString())));
         cluster = builder.build();

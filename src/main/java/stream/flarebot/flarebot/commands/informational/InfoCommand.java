@@ -69,7 +69,7 @@ public class InfoCommand implements Command {
         VERSION("Version", FlareBot.getVersion()),
         JDA_VERSION("JDA version", JDAInfo.VERSION),
         GIT("Git Revision", (GitHandler.getLatestCommitId() != null ? GitHandler.getLatestCommitId() : "Unknown")),
-        SOURCE("Source", "[`GitHub`](https://github.com/FlareBot/FlareBot)"),
+        SOURCE("Source", "[`GitHub`](https://github.com/Sculas/FlareBot)"),
         INVITE("Invite", String.format("[`Invite`](%s)", FlareBot.getInvite())),
         EMPTY("\u200B", "\u200B", false),
         SUPPORT_SERVER("Support Server", "[`Discord`](https://flarebot.stream/support-server)"),

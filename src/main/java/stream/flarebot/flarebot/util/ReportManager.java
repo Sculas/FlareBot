@@ -8,7 +8,7 @@ import java.util.List;
 
 public final class ReportManager {
 
-    private List<Report> reports = new ArrayList<>();
+    private final List<Report> reports = new ArrayList<>();
 
     public List<Report> getReports() {
         Collections.sort(reports);

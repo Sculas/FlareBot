@@ -22,7 +22,7 @@ public enum CommandType {
     private static final CommandType[] defaultTypes = fetchDefaultTypes();
     
     // If it shows up in help
-    private boolean defaultType;
+    private final boolean defaultType;
     // If it is restricted to staff, contribs or devs
     private long[] internalRoleIds = new long[] {};
 

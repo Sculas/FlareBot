@@ -19,7 +19,7 @@ public class ReportBugCommand implements Command {
 
     private static final String ISSUE_TEMPLATE = "<!--\n" +
             "Issue tracker is **ONLY** used for reporting bugs. NO FEATURE REQUESTS HERE! Use " +
-            "[the official guild](https://discordapp.com/invite/TTAUGvZ) for feature requests and suggestions.\n" +
+            "[the official guild](https://discordapp.com/invite/bRaBACvpMC) for feature requests and suggestions.\n" +
             "-->\n" +
             "\n" +
             "## Summary of the issue\n" +
@@ -76,7 +76,7 @@ public class ReportBugCommand implements Command {
                     FlareBot.getVersion() + " (" + GitHandler.getLatestCommitId() + ")",
                     guild.getGuildId() + ", " + sender.getIdLong()
             );
-            String url = "https://github.com/FlareBot/FlareBot/issues/new?title="
+            String url = "https://github.com/Sculas/FlareBot/issues/new?title="
                     + URLEncoder.encode(title.toString().trim(), "UTF-8")
                     + "&body=" + URLEncoder.encode(
                     String.format(ISSUE_TEMPLATE, summary.toString().trim(), context)

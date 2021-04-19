@@ -447,12 +447,11 @@ public class Events extends ListenerAdapter {
         if (cmd.getType().isInternal()) {
             if (GeneralUtils.canRunInternalCommand(cmd.getType(), event.getAuthor())) {
                 dispatchCommand(cmd, args, event, guild);
-                return;
             } else {
-                GeneralUtils.sendImage("https://flarebot.stream/img/trap.jpg", "trap.jpg", event.getAuthor());
+                GeneralUtils.sendImage("https://i.kym-cdn.com/entries/icons/original/000/000/157/itsatrap.jpg", "trap.jpg", event.getAuthor());
                 Constants.logEG("It's a trap", cmd, guild.getGuild(), event.getAuthor());
-                return;
             }
+            return;
         }
 
         if (guild.hasBetaAccess()) {
@@ -493,10 +492,10 @@ public class Events extends ListenerAdapter {
         if (event.getGuild().getIdLong() == Constants.OFFICIAL_GUILD && !handleOfficialGuildStuff(event, cmd))
             return;
 
-        if (event.getGuild().getIdLong() != Constants.OFFICIAL_GUILD && cmd.getType() == CommandType.MUSIC) {
-            MessageUtils.sendInfoMessage("FlareBot is closing down, as part of this we have disabled music commands, please read the announcement [here](https://docs.flarebot.stream). Please use the remaining available commands to move any data you wish over to other bots.\nBots we recommend:\nFredBoat - Music\nDyno - Moderation\nMee6 - Random stuff", event.getChannel());
-            return;
-        }
+//        if (event.getGuild().getIdLong() != Constants.OFFICIAL_GUILD && cmd.getType() == CommandType.MUSIC) {
+//            MessageUtils.sendInfoMessage("FlareBot is closing down, as part of this we have disabled music commands, please read the announcement [here](https://docs.flarebot.stream). Please use the remaining available commands to move any data you wish over to other bots.\nBots we recommend:\nFredBoat - Music\nDyno - Moderation\nMee6 - Random stuff", event.getChannel());
+//            return;
+//        }
         
         dispatchCommand(cmd, args, event, guild);
     }
@@ -505,7 +504,7 @@ public class Events extends ListenerAdapter {
         Guild guild = event.getGuild();
         GuildWrapper wrapper = FlareBotManager.instance().getGuild(guild.getId());
 
-        if (event.getChannel().getIdLong() == 226785954537406464L && !event.getMember().hasPermission(Permission.MESSAGE_MANAGE)) {
+        if (event.getChannel().getIdLong() == 833768100646092861L && !event.getMember().hasPermission(Permission.MESSAGE_MANAGE)) {
             event.getChannel().sendMessage("Heyo " + event.getAuthor().getAsMention()
                     + " please use me in <#226786507065786380>!").queue();
             return false;

@@ -15,6 +15,7 @@ import stream.flarebot.flarebot.util.general.GeneralUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class LogsCommand implements InternalCommand {
 
@@ -28,7 +29,7 @@ public class LogsCommand implements InternalCommand {
         }
 
         try {
-            ReversedLinesFileReader rlfr = new ReversedLinesFileReader(new File("latest.log"), Charset.forName("UTF-8"));
+            ReversedLinesFileReader rlfr = new ReversedLinesFileReader(new File("latest.log"), StandardCharsets.UTF_8);
             StringBuilder sb = new StringBuilder();
             String line;
             for (int i = 0; i < lineCount; i++) {

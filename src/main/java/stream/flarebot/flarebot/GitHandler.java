@@ -26,7 +26,7 @@ public class GitHandler {
         if (getGit() != null) {
             getGit().pull().call();
         } else {
-            Git.cloneRepository().setDirectory(directory).setURI("https://github.com/FlareBot/FlareBot.git").call();
+            Git.cloneRepository().setDirectory(directory).setURI("https://github.com/Sculas/FlareBot.git").call();
         }
 
     }
@@ -54,7 +54,7 @@ public class GitHandler {
                 try {
                     git = Git.cloneRepository()
                             .setDirectory(FlareBot.instance().isTestBot() ? new File(".") : new File("FlareBot/"))
-                            .setURI("https://github.com/FlareBot/FlareBot.git")
+                            .setURI("https://github.com/Sculas/FlareBot.git")
                             .call();
                 } catch (GitAPIException e1) {
                     e1.printStackTrace();

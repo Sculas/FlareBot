@@ -122,21 +122,21 @@ public class FlareBot {
     }
 
     private FlareBotManager manager;
-    private Map<String, PlayerCache> playerCache = new ConcurrentHashMap<>();
+    private final Map<String, PlayerCache> playerCache = new ConcurrentHashMap<>();
     private Events events;
     private ShardManager shardManager;
     private PlayerManager musicManager;
     private long startTime;
-    private Runtime runtime = Runtime.getRuntime();
+//    private final Runtime runtime = Runtime.getRuntime();
     private WebhookClient importantHook;
     private CommandManager commandManager;
 
     private static final DataInterceptor dataInterceptor = new DataInterceptor(DataInterceptor.RequestSender.JDA);
-    private static OkHttpClient client =
+    private static final OkHttpClient client =
             new OkHttpClient.Builder().connectionPool(new ConnectionPool(4, 10, TimeUnit.SECONDS))
                     .addInterceptor(dataInterceptor).build();
 
-    private AnalyticsHandler analyticsHandler;
+//    private AnalyticsHandler analyticsHandler;
 
     private final Set<FutureAction> futureActions = new ConcurrentHashSet<>();
 
@@ -165,11 +165,11 @@ public class FlareBot {
         required.add("redis.host");
         required.add("redis.port");
         required.add("redis.password");
-        required.add("sentry.dsn");
+        //required.add("sentry.dsn");
 
         boolean good = true;
         for (String req : required) {
-            if (config.getString(req) != null) {
+            if (config.getString(req).isPresent()) {
                 if (!config.getString(req).isPresent()) {
                     good = false;
                     LOGGER.error("Missing required json " + req);
@@ -205,11 +205,11 @@ public class FlareBot {
             }
         }
 
-        SentryClient sentryClient = Sentry.init(config.getString("sentry.dsn").get()
-                + "?stacktrace.app.packages=stream.flarebot.flarebot");
-        sentryClient.setEnvironment(testBot ? "TestBot" : "Production");
-        sentryClient.setServerName(testBot ? "Test Server" : "Production Server");
-        sentryClient.setRelease(GitHandler.getLatestCommitId());
+//        SentryClient sentryClient = Sentry.init(config.getString("sentry.dsn").get()
+//                + "?stacktrace.app.packages=stream.flarebot.flarebot");
+//        sentryClient.setEnvironment(testBot ? "TestBot" : "Production");
+//        sentryClient.setServerName(testBot ? "Test Server" : "Production Server");
+//        sentryClient.setRelease(GitHandler.getLatestCommitId());
 
         if (!config.getString("misc.apiKey").isPresent() || config.getString("misc.apiKey").get().isEmpty())
             apiEnabled = false;
@@ -397,12 +397,12 @@ public class FlareBot {
 
         musicManager.getPlayerCreateHooks().register(player -> player.addEventListener(new PlayerListener(player)));
 
-        analyticsHandler = new AnalyticsHandler();
-        analyticsHandler.registerAnalyticSender(new ActivityAnalytics());
-        analyticsHandler.registerAnalyticSender(new GuildAnalytics());
-        analyticsHandler.registerAnalyticSender(new GuildCountAnalytics());
-        LOGGER.info("Registered analytics - Running");
-        analyticsHandler.run(isTestBot() ? 1000 : -1);
+//        analyticsHandler = new AnalyticsHandler();
+//        analyticsHandler.registerAnalyticSender(new ActivityAnalytics());
+//        analyticsHandler.registerAnalyticSender(new GuildAnalytics());
+//        analyticsHandler.registerAnalyticSender(new GuildCountAnalytics());
+//        LOGGER.info("Registered analytics - Running");
+//        analyticsHandler.run(isTestBot() ? 1000 : -1);
 
 
         GeneralUtils.methodErrorHandler(LOGGER, null,
@@ -416,9 +416,9 @@ public class FlareBot {
         startTime = System.currentTimeMillis();
         LOGGER.info("FlareBot v" + getVersion() + " booted!");
 
-        GeneralUtils.methodErrorHandler(LOGGER, null,
-                "Sent commands to site!", "Failed to send commands to site!",
-                this::sendCommands);
+//        GeneralUtils.methodErrorHandler(LOGGER, null,
+//                "Sent commands to site!", "Failed to send commands to site!",
+//                this::sendCommands);
 
         GeneralUtils.methodErrorHandler(LOGGER, "Starting tasks!",
                 "Started all tasks, run complete!", "Failed to start all tasks!",
@@ -526,44 +526,44 @@ public class FlareBot {
                 .atTime(13, 0, 0), ChronoUnit.MILLIS));
     }
 
-    private void sendData() {
-        Guild g = Getters.getOfficialGuild();
-        JSONObject data = new JSONObject()
-                .put("guilds", Getters.getGuildCache().size())
-                //.put("loaded_guilds", FlareBotManager.instance().getGuilds().size())
-                .put("official_guild_users", g != null ? g.getMemberCache().size() : -1)
-                .put("text_channels", Getters.getTextChannelCache().size())
-                .put("voice_channels", Getters.getVoiceChannelCache().size())
-                .put("connected_voice_channels", Getters.getConnectedVoiceChannels())
-                .put("active_voice_channels", Getters.getActiveVoiceChannels())
-                .put("num_queued_songs", getMusicManager().getPlayers().stream()
-                        .mapToInt(player -> player.getPlaylist().size()).sum())
-                .put("ram", (((runtime.totalMemory() - runtime.freeMemory()) / 1024) / 1024) + "MB")
-                .put("uptime", getUptime())
-                .put("http_requests", dataInterceptor.getRequests().intValue());
-
-        ApiRequester.requestAsync(ApiRoute.UPDATE_DATA, data);
-    }
-
-    private void sendCommands() {
-        JSONObject obj = new JSONObject();
-        JSONArray array = new JSONArray();
-        for (Command cmd : commandManager.getCommands()) {
-            JSONObject cmdObj = new JSONObject()
-                    .put("command", cmd.getCommand())
-                    .put("description", cmd.getDescription())
-                    .put("permission", cmd.getPermission() == null ? "" : cmd.getPermission())
-                    .put("type", cmd.getType().toString());
-            JSONArray aliases = new JSONArray();
-            for (String s : cmd.getAliases())
-                aliases.put(s);
-            cmdObj.put("aliases", aliases);
-            array.put(cmdObj);
-        }
-        obj.put("commands", array);
-
-        ApiRequester.requestAsync(ApiRoute.COMMANDS, obj);
-    }
+//    private void sendData() {
+//        Guild g = Getters.getOfficialGuild();
+//        JSONObject data = new JSONObject()
+//                .put("guilds", Getters.getGuildCache().size())
+//                //.put("loaded_guilds", FlareBotManager.instance().getGuilds().size())
+//                .put("official_guild_users", g != null ? g.getMemberCache().size() : -1)
+//                .put("text_channels", Getters.getTextChannelCache().size())
+//                .put("voice_channels", Getters.getVoiceChannelCache().size())
+//                .put("connected_voice_channels", Getters.getConnectedVoiceChannels())
+//                .put("active_voice_channels", Getters.getActiveVoiceChannels())
+//                .put("num_queued_songs", getMusicManager().getPlayers().stream()
+//                        .mapToInt(player -> player.getPlaylist().size()).sum())
+//                .put("ram", (((runtime.totalMemory() - runtime.freeMemory()) / 1024) / 1024) + "MB")
+//                .put("uptime", getUptime())
+//                .put("http_requests", dataInterceptor.getRequests().intValue());
+//
+//        ApiRequester.requestAsync(ApiRoute.UPDATE_DATA, data);
+//    }
+//
+//    private void sendCommands() {
+//        JSONObject obj = new JSONObject();
+//        JSONArray array = new JSONArray();
+//        for (Command cmd : commandManager.getCommands()) {
+//            JSONObject cmdObj = new JSONObject()
+//                    .put("command", cmd.getCommand())
+//                    .put("description", cmd.getDescription())
+//                    .put("permission", cmd.getPermission() == null ? "" : cmd.getPermission())
+//                    .put("type", cmd.getType().toString());
+//            JSONArray aliases = new JSONArray();
+//            for (String s : cmd.getAliases())
+//                aliases.put(s);
+//            cmdObj.put("aliases", aliases);
+//            array.put(cmdObj);
+//        }
+//        obj.put("commands", array);
+//
+//        ApiRequester.requestAsync(ApiRoute.COMMANDS, obj);
+//    }
 
     public void quit(boolean update) {
         if (update) {
@@ -573,7 +573,7 @@ public class FlareBot {
                 if (!(git.exists() && git.isDirectory())) {
                     LOGGER.info("Cloning git!");
                     ProcessBuilder clone =
-                            new ProcessBuilder("git", "clone", "https://github.com/FlareBot/FlareBot.git", git
+                            new ProcessBuilder("git", "clone", "https://github.com/Sculas/FlareBot.git", git
                                     .getAbsolutePath());
                     clone.redirectErrorStream(true);
                     Process p = clone.start();
@@ -651,7 +651,7 @@ public class FlareBot {
             scheduledFuture.cancel(false); // No tasks in theory should block this or cause issues. We'll see
         for (JDA client : shardManager.getShards())
             client.removeEventListener(events); //todo: Make a replacement for the array
-        sendData();
+        //sendData();
         manager.getGuilds().invalidateAll();
         shardManager.shutdown();
         LOGGER.info("Finished saving!");
@@ -847,9 +847,9 @@ public class FlareBot {
         return config;
     }
 
-    public AnalyticsHandler getAnalyticsHandler() {
-        return analyticsHandler;
-    }
+//    public AnalyticsHandler getAnalyticsHandler() {
+//        return analyticsHandler;
+//    }
 
     public static CommandManager getCommandManager() {
         return FlareBot.instance().commandManager;

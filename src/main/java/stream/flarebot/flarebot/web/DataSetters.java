@@ -40,8 +40,8 @@ public enum DataSetters {
             new BodyRequire(e -> e.isJsonPrimitive() && ((JsonPrimitive) e).isString(), "name"),
             new BodyRequire(JsonElement::isJsonArray, "playlist"));
 
-    private Route consumer;
-    private Require[] requires;
+    private final Route consumer;
+    private final Require[] requires;
 
     DataSetters(Route o, Require... requires) {
         consumer = o;

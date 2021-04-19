@@ -22,17 +22,17 @@ public class NINO {
     // 2 - Aggressive (Ignore protocol and follow URLs)
     private byte mode = 0;
 
-    private Set<String> whitelistedUrls;
-    private Set<Long> whitelistedChannels;
-    private List<String> removeMessages = new CopyOnWriteArrayList<>();
+    private final Set<String> whitelistedUrls;
+    private final Set<Long> whitelistedChannels;
+    private final List<String> removeMessages = new CopyOnWriteArrayList<>();
 
-    private Set<URLCheckFlag> urlFlags = new ConcurrentHashSet<>();
+    private final Set<URLCheckFlag> urlFlags = new ConcurrentHashSet<>();
 
     public NINO() {
         this.whitelistedUrls = new ConcurrentHashSet<>();
         this.whitelistedChannels = new ConcurrentHashSet<>();
         this.whitelistedUrls.add("discord.gg/discord-developers");
-        this.whitelistedUrls.add("discord.gg/TTAUGvZ");
+        this.whitelistedUrls.add("discord.gg/bRaBACvpMC");
         this.removeMessages.add("No no no, you post not an invite here!\nYes, hmmm.");
     }
 

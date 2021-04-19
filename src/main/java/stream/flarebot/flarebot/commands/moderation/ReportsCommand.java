@@ -101,7 +101,7 @@ public class ReportsCommand implements Command {
                     if (getPermissions(channel).hasPermission(member, Permission.REPORTS_STATUS)) {
                         int id;
                         try {
-                            id = Integer.valueOf(args[1]);
+                            id = Integer.parseInt(args[1]);
                         } catch (Exception e) {
                             MessageUtils.sendErrorMessage("Invalid report number: " + args[1] + ".", channel);
                             return;

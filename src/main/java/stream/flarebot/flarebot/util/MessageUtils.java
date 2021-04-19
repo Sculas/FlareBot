@@ -124,22 +124,29 @@ public class MessageUtils {
     }
 
     public static String paste(String trace) {
-        if (flareBot.getPasteKey() == null || flareBot.getPasteKey().isEmpty()) {
-            FlareBot.LOGGER.warn("Paste server key is missing! Pastes will not work!");
-            return null;
-        }
+//        if (flareBot.getPasteKey() == null || flareBot.getPasteKey().isEmpty()) {
+//            FlareBot.LOGGER.warn("Paste server key is missing! Pastes will not work!");
+//            return null;
+//        }
         try {
-            Response response = WebUtils.request(new Request.Builder().url("https://paste.flarebot.stream/documents")
-                    .addHeader("Authorization", flareBot.getPasteKey()).post(RequestBody
-                            .create(WebUtils.APPLICATION_JSON, trace)));
-            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+            // TODO add local hastebin instance
+            Response response = WebUtils.request(new Request.Builder().url("https://hastebin.com/documents")
+                    .post(RequestBody.create(WebUtils.APPLICATION_JSON, trace)));
             ResponseBody body = response.body();
+            if (!response.isSuccessful()) {
+                if (body != null) {
+                    System.out.println("Body:");
+                    System.out.println(body.string());
+                }
+                return "ERROR";
+                //throw new IOException("Unexpected code " + response);
+            }
             if (body != null) {
                 String key = new JSONObject(body.string()).getString("key");
                 body.close();
-                return "https://paste.flarebot.stream/" + key;
+                return "https://hastebin.com/" + key;
             } else {
-                FlareBot.LOGGER.error("Local instance of hastebin is down");
+                FlareBot.LOGGER.error("hastebin.com is down?");
                 return null;
             }
         } catch (IOException | JSONException e) {

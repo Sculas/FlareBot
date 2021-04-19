@@ -22,22 +22,12 @@
         </repository>
     </repositories>
     <dependencies>
-        <!-- JDA -->
-        <!--
-        Waiting for my PR to be merged (https://github.com/DV8FromTheWorld/JDA/pull/637)
-        -->
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
             <version>3.5.1_353</version>
         </dependency>
-        <!--<dependency>
-            <groupId>com.github.WalshyDev</groupId>
-            <artifactId>JDA</artifactId>
-            <version>9029b24d37</version>
-        </dependency>-->
-
-        <!-- Lavaplayer related -->
+        <!-- LavaPlayer related -->
         <dependency>
             <groupId>com.sedmelluq</groupId>
             <artifactId>lavaplayer</artifactId>
@@ -212,13 +202,10 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
+                <artifactId>maven-jar-plugin</artifactId>
                 <executions>
                     <execution>
                         <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
                     </execution>
                 </executions>
                 <configuration>
@@ -227,9 +214,6 @@
                             <mainClass>stream.flarebot.flarebot.FlareBot</mainClass>
                         </manifest>
                     </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
                 </configuration>
             </plugin>
         </plugins>
