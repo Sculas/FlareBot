@@ -24,3 +24,5 @@ gradle/
 gradlew
 gradlew.bat
 settings.gradle
+run.bat
+FlareBot.jar
