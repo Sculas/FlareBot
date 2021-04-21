@@ -1,7 +1,7 @@
 package stream.flarebot.flarebot.mod.nino;
 
 import com.google.common.collect.ImmutableList;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import stream.flarebot.flarebot.FlareBotManager;

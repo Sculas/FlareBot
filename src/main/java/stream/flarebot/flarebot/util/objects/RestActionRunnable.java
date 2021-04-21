@@ -1,6 +1,6 @@
 package stream.flarebot.flarebot.util.objects;
 
-import net.dv8tion.jda.core.requests.RestAction;
+import net.dv8tion.jda.api.requests.RestAction;
 
 /**
  * Created by William on 12/09/2017.

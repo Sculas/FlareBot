@@ -3,10 +3,10 @@ package stream.flarebot.flarebot.commands.secret;
 import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import org.apache.commons.codec.binary.StringUtils;
 import stream.flarebot.flarebot.commands.CommandType;
 import stream.flarebot.flarebot.commands.InternalCommand;
@@ -50,11 +50,11 @@ public class EvalCommand implements InternalCommand {
             "stream.flarebot.flarebot.permissions",
             "stream.flarebot.flarebot.commands",
             "stream.flarebot.flarebot.music.extractors",
-            "net.dv8tion.jda.core",
-            "net.dv8tion.jda.core.managers",
-            "net.dv8tion.jda.core.entities.impl",
-            "net.dv8tion.jda.core.entities",
-            "net.dv8tion.jda.core.utils",
+            "net.dv8tion.jda.api",
+            "net.dv8tion.jda.api.managers",
+            "net.dv8tion.jda.api.entities.impl",
+            "net.dv8tion.jda.api.entities",
+            "net.dv8tion.jda.api.utils",
             "java.util.streams",
             "java.util",
             "java.lang",

@@ -36,15 +36,15 @@ public enum Permission {
     USERINFO_COMMAND("userinfo", true),
     USERINFO_OTHER("userinfo.other", true),
     // Moderation
-    BAN_COMMAND("ban", false, net.dv8tion.jda.core.Permission.BAN_MEMBERS),
-    SOFTBAN_COMMAND("softban", false, net.dv8tion.jda.core.Permission.BAN_MEMBERS),
-    FORCEBAN_COMMAND("forceban", false, net.dv8tion.jda.core.Permission.BAN_MEMBERS),
-    KICK_COMMAND("kick", false, net.dv8tion.jda.core.Permission.KICK_MEMBERS),
+    BAN_COMMAND("ban", false, net.dv8tion.jda.api.Permission.BAN_MEMBERS),
+    SOFTBAN_COMMAND("softban", false, net.dv8tion.jda.api.Permission.BAN_MEMBERS),
+    FORCEBAN_COMMAND("forceban", false, net.dv8tion.jda.api.Permission.BAN_MEMBERS),
+    KICK_COMMAND("kick", false, net.dv8tion.jda.api.Permission.KICK_MEMBERS),
     MODLOG_COMMAND("modlog", false),
     MUTE_COMMAND("mute", false),
-    TEMPBAN_COMMAND("tempban", false, net.dv8tion.jda.core.Permission.BAN_MEMBERS),
+    TEMPBAN_COMMAND("tempban", false, net.dv8tion.jda.api.Permission.BAN_MEMBERS),
     TEMPMUTE_COMMAND("tempmute", false),
-    UNBAN_COMMAND("unban", false, net.dv8tion.jda.core.Permission.BAN_MEMBERS),
+    UNBAN_COMMAND("unban", false, net.dv8tion.jda.api.Permission.BAN_MEMBERS),
     UNMUTE_COMMAND("unmute", false),
     WARN_COMMAND("warn", false),
     WARNINGS_COMMAND("warnings", false),
@@ -54,16 +54,16 @@ public enum Permission {
     AUTOASSIGN_COMMAND("autoassign", false),
     FIX_COMMAND("fix", false),
     LOCKCHAT_COMMAND("lockchat", false),
-    PERMISSIONS_COMMAND("permissions", false, net.dv8tion.jda.core.Permission.MANAGE_SERVER),
-    PIN_COMMAND("pin", false, net.dv8tion.jda.core.Permission.MESSAGE_MANAGE),
-    PRUNE_COMMAND("prune", false, net.dv8tion.jda.core.Permission.MANAGE_SERVER),
-    PURGE_COMMAND("purge", false, net.dv8tion.jda.core.Permission.MESSAGE_MANAGE),
+    PERMISSIONS_COMMAND("permissions", false, net.dv8tion.jda.api.Permission.MANAGE_SERVER),
+    PIN_COMMAND("pin", false, net.dv8tion.jda.api.Permission.MESSAGE_MANAGE),
+    PRUNE_COMMAND("prune", false, net.dv8tion.jda.api.Permission.MANAGE_SERVER),
+    PURGE_COMMAND("purge", false, net.dv8tion.jda.api.Permission.MESSAGE_MANAGE),
     REPORTS_COMMAND("reports", false),
     REPORTS_LIST("reports.list", false),
     REPORTS_VIEW("reports.view", false),
     REPORTS_STATUS("reports.status", false),
     ROLES_COMMAND("roles", false),
-    SETPREFIX_COMMAND("setprefix", false, net.dv8tion.jda.core.Permission.MANAGE_SERVER),
+    SETPREFIX_COMMAND("setprefix", false, net.dv8tion.jda.api.Permission.MANAGE_SERVER),
     WELCOME_COMMAND("welcome", false),
     // Music
     DELETE_COMMAND("playlist.delete", false),
@@ -107,7 +107,7 @@ public enum Permission {
 
     private String permission;
     private boolean defaultPerm;
-    private EnumSet<net.dv8tion.jda.core.Permission> discordPerm = EnumSet.noneOf(net.dv8tion.jda.core.Permission.class);
+    private EnumSet<net.dv8tion.jda.api.Permission> discordPerm = EnumSet.noneOf(net.dv8tion.jda.api.Permission.class);
     private CommandType commandType;
 
     private static final Map<CommandType, Permission> COMMAND_TYPE_MAP =
@@ -129,10 +129,10 @@ public enum Permission {
         this.commandType = commandType;
     }
 
-    Permission(String permission, boolean defaultPerm, net.dv8tion.jda.core.Permission... discordPerm) {
+    Permission(String permission, boolean defaultPerm, net.dv8tion.jda.api.Permission... discordPerm) {
         this.permission = "flarebot." + permission;
         this.defaultPerm = defaultPerm;
-        this.discordPerm = EnumSet.noneOf(net.dv8tion.jda.core.Permission.class);
+        this.discordPerm = EnumSet.noneOf(net.dv8tion.jda.api.Permission.class);
         this.discordPerm.addAll(Arrays.asList(discordPerm));
     }
 
@@ -173,7 +173,7 @@ public enum Permission {
         return getPermission(permission.substring(permission.startsWith("-") ? 1 : 0)) != null;
     }
 
-    public EnumSet<net.dv8tion.jda.core.Permission> getDiscordPerm() {
+    public EnumSet<net.dv8tion.jda.api.Permission> getDiscordPerm() {
         return discordPerm;
     }
 

@@ -1,6 +1,6 @@
 package stream.flarebot.flarebot.metrics;
 
-import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.api.JDA;
 import org.slf4j.LoggerFactory;
 import stream.flarebot.flarebot.FlareBot;
 import stream.flarebot.flarebot.Getters;

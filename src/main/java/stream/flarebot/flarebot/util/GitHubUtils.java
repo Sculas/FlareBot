@@ -1,6 +1,6 @@
 package stream.flarebot.flarebot.util;
 
-import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;

@@ -1,10 +1,8 @@
 package stream.flarebot.flarebot;
 
 import ch.qos.logback.classic.Level;
-import com.arsenarsen.lavaplayerbridge.PlayerManager;
-import com.arsenarsen.lavaplayerbridge.libraries.LibraryFactory;
-import com.arsenarsen.lavaplayerbridge.libraries.UnknownBindingException;
-import com.arsenarsen.lavaplayerbridge.utils.JDAMultiShard;
+import club.minnced.discord.webhook.WebhookClient;
+import club.minnced.discord.webhook.WebhookClientBuilder;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.google.gson.Gson;
@@ -13,39 +11,27 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sedmelluq.discord.lavaplayer.jdaudp.NativeAudioSendFactory;
 import io.github.binaryoverload.JSONConfig;
-import io.sentry.Sentry;
-import io.sentry.SentryClient;
-import net.dv8tion.jda.bot.sharding.DefaultShardManagerBuilder;
-import net.dv8tion.jda.bot.sharding.ShardManager;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.SelfUser;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.exceptions.ErrorResponseException;
-import net.dv8tion.jda.core.requests.RestAction;
-import net.dv8tion.jda.webhook.WebhookClient;
-import net.dv8tion.jda.webhook.WebhookClientBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.SelfUser;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
+import net.dv8tion.jda.api.requests.RestAction;
+import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import org.eclipse.jetty.util.ConcurrentHashSet;
 import org.joda.time.DateTime;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Spark;
-import stream.flarebot.flarebot.analytics.ActivityAnalytics;
-import stream.flarebot.flarebot.analytics.AnalyticsHandler;
-import stream.flarebot.flarebot.analytics.GuildAnalytics;
-import stream.flarebot.flarebot.analytics.GuildCountAnalytics;
-import stream.flarebot.flarebot.api.ApiRequester;
-import stream.flarebot.flarebot.api.ApiRoute;
 import stream.flarebot.flarebot.audio.PlayerListener;
-import stream.flarebot.flarebot.commands.*;
+import stream.flarebot.flarebot.commands.CommandManager;
 import stream.flarebot.flarebot.database.CassandraController;
 import stream.flarebot.flarebot.database.RedisController;
 import stream.flarebot.flarebot.metrics.Metrics;
@@ -56,11 +42,7 @@ import stream.flarebot.flarebot.scheduler.FlareBotTask;
 import stream.flarebot.flarebot.scheduler.FutureAction;
 import stream.flarebot.flarebot.scheduler.Scheduler;
 import stream.flarebot.flarebot.tasks.VoiceChannelCleanup;
-import stream.flarebot.flarebot.util.Constants;
-import stream.flarebot.flarebot.util.MessageUtils;
-import stream.flarebot.flarebot.util.MigrationHandler;
-import stream.flarebot.flarebot.util.ShardUtils;
-import stream.flarebot.flarebot.util.WebUtils;
+import stream.flarebot.flarebot.util.*;
 import stream.flarebot.flarebot.util.general.GeneralUtils;
 import stream.flarebot.flarebot.web.ApiFactory;
 import stream.flarebot.flarebot.web.DataInterceptor;
@@ -68,14 +50,7 @@ import stream.flarebot.flarebot.ws.WebSocketFactory;
 import stream.flarebot.flarebot.ws.WebSocketListener;
 
 import javax.annotation.Nonnull;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -84,12 +59,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -127,7 +97,6 @@ public class FlareBot {
     private ShardManager shardManager;
     private PlayerManager musicManager;
     private long startTime;
-//    private final Runtime runtime = Runtime.getRuntime();
     private WebhookClient importantHook;
     private CommandManager commandManager;
 
@@ -135,8 +104,6 @@ public class FlareBot {
     private static final OkHttpClient client =
             new OkHttpClient.Builder().connectionPool(new ConnectionPool(4, 10, TimeUnit.SECONDS))
                     .addInterceptor(dataInterceptor).build();
-
-//    private AnalyticsHandler analyticsHandler;
 
     private final Set<FutureAction> futureActions = new ConcurrentHashSet<>();
 
@@ -329,7 +296,7 @@ public class FlareBot {
 
         Metrics.setup();
 
-        RestAction.DEFAULT_FAILURE = t -> {
+        RestAction.setDefaultFailure(t -> {
             if (t instanceof ErrorResponseException) {
                 ErrorResponseException e = (ErrorResponseException) t;
                 Metrics.failedRestActions.labels(String.valueOf(e.getErrorCode())).inc();
@@ -337,7 +304,7 @@ public class FlareBot {
                     return;
             }
             LOGGER.warn("Failed RestAction - " + t.getMessage());
-        };
+        });
 
         events = new Events(this);
         LOGGER.info("Starting builders");
@@ -346,7 +313,7 @@ public class FlareBot {
             shardManager = new DefaultShardManagerBuilder()
                     .addEventListeners(events)
                     .addEventListeners(new ModlogEvents())
-                    //.addEventListeners(Metrics.instance().jdaEventMetricsListener) TODO Disabled metrics for now
+                    .addEventListeners(Metrics.instance().jdaEventMetricsListener)
                     .addEventListeners(new NINOListener())
                     .setToken(config.getString("bot.token").get())
                     .setAudioSendFactory(new NativeAudioSendFactory())
@@ -685,10 +652,10 @@ public class FlareBot {
     public void setStatus(String status) {
         //TODO: Check if we're actually streaming or not.
         if (shardManager.getShardsTotal() == 1) {
-            shardManager.setGameProvider(shardId -> Game.streaming(status, "https://www.twitch.tv/discordflarebot"));
+            shardManager.setActivityProvider(shardId -> Activity.streaming(status, "https://www.twitch.tv/discordflarebot"));
             return;
         }
-        shardManager.setGameProvider(shardId -> Game.streaming(status + " | Shard: " + shardId + "/" + shardManager.getShardsTotal(),
+        shardManager.setActivityProvider(shardId -> Activity.streaming(status + " | Shard: " + shardId + "/" + shardManager.getShardsTotal(),
                 "https://www.twitch.tv/discordflarebot"));
     }
 

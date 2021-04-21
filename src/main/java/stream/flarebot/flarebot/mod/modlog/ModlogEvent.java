@@ -1,7 +1,7 @@
 package stream.flarebot.flarebot.mod.modlog;
 
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
 import org.apache.commons.lang3.text.WordUtils;
 import stream.flarebot.flarebot.util.ColorUtils;
 import stream.flarebot.flarebot.util.general.FormatUtils;

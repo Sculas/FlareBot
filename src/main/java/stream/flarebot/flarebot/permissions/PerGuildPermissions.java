@@ -1,6 +1,6 @@
 package stream.flarebot.flarebot.permissions;
 
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.api.entities.Member;
 import stream.flarebot.flarebot.FlareBot;
 import stream.flarebot.flarebot.util.Constants;
 
@@ -20,7 +20,7 @@ public class PerGuildPermissions {
             return true;
         if (user.isOwner())
             return true;
-        if (user.getPermissions().contains(net.dv8tion.jda.core.Permission.ADMINISTRATOR))
+        if (user.getPermissions().contains(net.dv8tion.jda.api.Permission.ADMINISTRATOR))
             return true;
         if (isContributor(user.getUser()) && FlareBot.instance().isTestBot())
             return true;
@@ -90,21 +90,21 @@ public class PerGuildPermissions {
         return groups;
     }
 
-    private static boolean checkOfficialGuildForRole(net.dv8tion.jda.core.entities.User user, long roleId) {
+    private static boolean checkOfficialGuildForRole(net.dv8tion.jda.api.entities.User user, long roleId) {
         if (!FlareBot.instance().isReady() || Constants.getOfficialGuild() == null) return false;
         return Constants.getOfficialGuild().getMember(user) != null && Constants.getOfficialGuild().getMember(user).getRoles()
                 .contains(Constants.getOfficialGuild().getRoleById(roleId));
     }
 
-    public static boolean isCreator(net.dv8tion.jda.core.entities.User user) {
+    public static boolean isCreator(net.dv8tion.jda.api.entities.User user) {
         return checkOfficialGuildForRole(user, Constants.DEVELOPER_ID);
     }
 
-    public static boolean isContributor(net.dv8tion.jda.core.entities.User user) {
+    public static boolean isContributor(net.dv8tion.jda.api.entities.User user) {
         return checkOfficialGuildForRole(user, Constants.CONTRIBUTOR_ID);
     }
 
-    public static boolean isAdmin(net.dv8tion.jda.core.entities.User user) {
+    public static boolean isAdmin(net.dv8tion.jda.api.entities.User user) {
         return checkOfficialGuildForRole(user, Constants.ADMINS_ID);
     }
 

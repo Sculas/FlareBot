@@ -1,7 +1,7 @@
 package stream.flarebot.flarebot.commands.moderation;
 
 import com.arsenarsen.lavaplayerbridge.player.Player;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.api.entities.*;
 import stream.flarebot.flarebot.FlareBot;
 import stream.flarebot.flarebot.commands.Command;
 import stream.flarebot.flarebot.commands.CommandType;

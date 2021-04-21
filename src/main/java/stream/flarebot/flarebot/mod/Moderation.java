@@ -1,7 +1,7 @@
 package stream.flarebot.flarebot.mod;
 
 import io.netty.util.internal.ConcurrentSet;
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.api.entities.Member;
 import stream.flarebot.flarebot.mod.modlog.ModlogAction;
 import stream.flarebot.flarebot.mod.modlog.ModlogEvent;
 import stream.flarebot.flarebot.objects.GuildWrapper;

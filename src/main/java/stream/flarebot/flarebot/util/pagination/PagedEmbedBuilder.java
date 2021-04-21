@@ -1,7 +1,7 @@
 package stream.flarebot.flarebot.util.pagination;
 
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import stream.flarebot.flarebot.Getters;
 import stream.flarebot.flarebot.util.ColorUtils;
 import stream.flarebot.flarebot.util.Constants;

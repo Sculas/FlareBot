@@ -2,8 +2,8 @@ package stream.flarebot.flarebot.music.extractors;
 
 import com.arsenarsen.lavaplayerbridge.player.Player;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManager;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 
 public interface Extractor {
 

@@ -1,39 +1,42 @@
 package stream.flarebot.flarebot;
 
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.audit.ActionType;
-import net.dv8tion.jda.core.audit.AuditLogChange;
-import net.dv8tion.jda.core.audit.AuditLogEntry;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.events.channel.text.GenericTextChannelEvent;
-import net.dv8tion.jda.core.events.channel.text.TextChannelCreateEvent;
-import net.dv8tion.jda.core.events.channel.text.TextChannelDeleteEvent;
-import net.dv8tion.jda.core.events.channel.voice.GenericVoiceChannelEvent;
-import net.dv8tion.jda.core.events.channel.voice.VoiceChannelCreateEvent;
-import net.dv8tion.jda.core.events.channel.voice.VoiceChannelDeleteEvent;
-import net.dv8tion.jda.core.events.guild.GenericGuildEvent;
-import net.dv8tion.jda.core.events.guild.GuildBanEvent;
-import net.dv8tion.jda.core.events.guild.member.*;
-import net.dv8tion.jda.core.events.guild.update.GenericGuildUpdateEvent;
-import net.dv8tion.jda.core.events.guild.update.GuildUpdateExplicitContentLevelEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceMoveEvent;
-import net.dv8tion.jda.core.events.message.GenericMessageEvent;
-import net.dv8tion.jda.core.events.message.MessageDeleteEvent;
-import net.dv8tion.jda.core.events.message.MessageUpdateEvent;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.core.events.role.GenericRoleEvent;
-import net.dv8tion.jda.core.events.role.RoleCreateEvent;
-import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
-import net.dv8tion.jda.core.events.role.update.GenericRoleUpdateEvent;
-import net.dv8tion.jda.core.events.role.update.RoleUpdatePositionEvent;
-import net.dv8tion.jda.core.hooks.EventListener;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.audit.ActionType;
+import net.dv8tion.jda.api.audit.AuditLogChange;
+import net.dv8tion.jda.api.audit.AuditLogEntry;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.GenericEvent;
+import net.dv8tion.jda.api.events.channel.text.GenericTextChannelEvent;
+import net.dv8tion.jda.api.events.channel.text.TextChannelCreateEvent;
+import net.dv8tion.jda.api.events.channel.text.TextChannelDeleteEvent;
+import net.dv8tion.jda.api.events.channel.voice.GenericVoiceChannelEvent;
+import net.dv8tion.jda.api.events.channel.voice.VoiceChannelCreateEvent;
+import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
+import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
+import net.dv8tion.jda.api.events.guild.GuildBanEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
+import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdateNicknameEvent;
+import net.dv8tion.jda.api.events.guild.update.GenericGuildUpdateEvent;
+import net.dv8tion.jda.api.events.guild.update.GuildUpdateExplicitContentLevelEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
+import net.dv8tion.jda.api.events.message.GenericMessageEvent;
+import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
+import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
+import net.dv8tion.jda.api.events.role.GenericRoleEvent;
+import net.dv8tion.jda.api.events.role.RoleCreateEvent;
+import net.dv8tion.jda.api.events.role.RoleDeleteEvent;
+import net.dv8tion.jda.api.events.role.update.GenericRoleUpdateEvent;
+import net.dv8tion.jda.api.events.role.update.RoleUpdatePositionEvent;
+import net.dv8tion.jda.api.hooks.EventListener;
 import stream.flarebot.flarebot.database.RedisController;
 import stream.flarebot.flarebot.database.RedisMessage;
 import stream.flarebot.flarebot.mod.modlog.ModlogEvent;
@@ -43,15 +46,14 @@ import stream.flarebot.flarebot.util.MessageUtils;
 import stream.flarebot.flarebot.util.general.FormatUtils;
 import stream.flarebot.flarebot.util.general.GeneralUtils;
 import stream.flarebot.flarebot.util.general.GuildUtils;
-import stream.flarebot.flarebot.util.general.VariableUtils;
 
+import javax.annotation.Nonnull;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Nonnull;
 
 public class ModlogEvents implements EventListener {
 
@@ -59,7 +61,7 @@ public class ModlogEvents implements EventListener {
     private long guildResponseNumber = 0;
 
     @Override
-    public void onEvent(Event event) {
+    public void onEvent(GenericEvent event) {
         if (!(event instanceof GenericGuildEvent)
                 && !(event instanceof GenericRoleEvent)
                 && !(event instanceof GenericTextChannelEvent)
@@ -91,8 +93,8 @@ public class ModlogEvents implements EventListener {
             onGuildBan((GuildBanEvent) event, guildWrapper);
         else if (event instanceof GuildMemberJoinEvent)
             onGuildMemberJoin((GuildMemberJoinEvent) event, guildWrapper);
-        else if (event instanceof GuildMemberLeaveEvent)
-            onGuildMemberLeave((GuildMemberLeaveEvent) event, guildWrapper);
+        else if (event instanceof GuildMemberRemoveEvent)
+            onGuildMemberLeave((GuildMemberRemoveEvent) event, guildWrapper);
         else if (event instanceof GuildVoiceJoinEvent)
             onGuildVoiceJoin((GuildVoiceJoinEvent) event, guildWrapper);
         else if (event instanceof GuildVoiceLeaveEvent)
@@ -127,8 +129,8 @@ public class ModlogEvents implements EventListener {
             // GUILD
         else if (event instanceof GuildUpdateExplicitContentLevelEvent)
             onGuildUpdateExplicitContentLevel((GuildUpdateExplicitContentLevelEvent) event, guildWrapper);
-        else if (event instanceof GuildMemberNickChangeEvent)
-            onGuildMemberNickChange((GuildMemberNickChangeEvent) event, guildWrapper);
+        else if (event instanceof GuildMemberUpdateNicknameEvent)
+            onGuildMemberNickChange((GuildMemberUpdateNicknameEvent) event, guildWrapper);
         else if (event instanceof GenericGuildUpdateEvent)
             onGenericGuildUpdate((GenericGuildUpdateEvent) event, guildWrapper);
         else if (event instanceof GuildVoiceMoveEvent)
@@ -137,7 +139,7 @@ public class ModlogEvents implements EventListener {
 
     private void onGuildBan(GuildBanEvent event, @Nonnull GuildWrapper wrapper) {
         if (cannotHandle(wrapper, ModlogEvent.USER_BANNED)) return;
-        event.getGuild().getAuditLogs().limit(1).type(ActionType.BAN).queue(auditLogEntries -> {
+        event.getGuild().retrieveAuditLogs().limit(1).type(ActionType.BAN).queue(auditLogEntries -> {
             AuditLogEntry entry = auditLogEntries.get(0);
             // We don't want dupes.
             if (entry.getUser().getIdLong() == FlareBot.instance().getClient().getSelfUser().getIdLong()) return;
@@ -153,7 +155,7 @@ public class ModlogEvents implements EventListener {
         ModlogHandler.getInstance().postToModlog(wrapper, ModlogEvent.MEMBER_JOIN, event.getUser());
     }
 
-    private void onGuildMemberLeave(GuildMemberLeaveEvent event, @Nonnull GuildWrapper wrapper) {
+    private void onGuildMemberLeave(GuildMemberRemoveEvent event, @Nonnull GuildWrapper wrapper) {
         if (!wrapper.getModeration().isEventEnabled(wrapper, ModlogEvent.MEMBER_LEAVE)
                 && !wrapper.getModeration().isEventEnabled(wrapper, ModlogEvent.USER_KICKED)) return;
         boolean checkKick = event.getGuild().getSelfMember().hasPermission(Permission.VIEW_AUDIT_LOGS)
@@ -163,7 +165,7 @@ public class ModlogEvents implements EventListener {
             ModlogHandler.getInstance().postToModlog(wrapper, ModlogEvent.MEMBER_LEAVE, event.getUser());
             return;
         }
-        event.getGuild().getAuditLogs().limit(1).type(ActionType.KICK).queue(auditLogEntries -> {
+        event.getGuild().retrieveAuditLogs().limit(1).type(ActionType.KICK).queue(auditLogEntries -> {
             AuditLogEntry entry = null;
             User responsible = null;
             String reason = null;
@@ -209,7 +211,7 @@ public class ModlogEvents implements EventListener {
     private void onRoleCreate(RoleCreateEvent event, @Nonnull GuildWrapper wrapper) {
         if (event.getGuild() == null) return;
         if (cannotHandle(wrapper, ModlogEvent.ROLE_CREATE)) return;
-        event.getGuild().getAuditLogs().queue(auditLog -> {
+        event.getGuild().retrieveAuditLogs().queue(auditLog -> {
             AuditLogEntry entry = auditLog.get(0);
             ModlogHandler.getInstance().postToModlog(wrapper, ModlogEvent.ROLE_CREATE,
                     entry.getUser(), new MessageEmbed.Field("Role", event.getRole().getName()
@@ -220,7 +222,7 @@ public class ModlogEvents implements EventListener {
 
     private void onRoleDelete(RoleDeleteEvent event, @Nonnull GuildWrapper wrapper) {
         if (cannotHandle(wrapper, ModlogEvent.ROLE_DELETE)) return;
-        event.getGuild().getAuditLogs().queue(auditLog -> {
+        event.getGuild().retrieveAuditLogs().queue(auditLog -> {
             AuditLogEntry entry = auditLog.get(0);
             ModlogHandler.getInstance().postToModlog(wrapper, ModlogEvent.ROLE_DELETE,
                     entry.getUser(), new MessageEmbed.Field("Role", event.getRole().getName()
@@ -237,7 +239,7 @@ public class ModlogEvents implements EventListener {
             return;
         }
         roleResponseNumber = event.getResponseNumber();
-        event.getGuild().getAuditLogs().limit(1).queue(auditLogs -> {
+        event.getGuild().retrieveAuditLogs().limit(1).queue(auditLogs -> {
             AuditLogEntry entry = auditLogs.get(0);
             Map<String, AuditLogChange> changes = entry.getChanges();
             EmbedBuilder permissionsBuilder = new EmbedBuilder();
@@ -245,21 +247,21 @@ public class ModlogEvents implements EventListener {
             if (changes.containsKey("permissions")) {
                 AuditLogChange change = changes.get("permissions");
                 Map<Boolean, List<Permission>> permChanges = GeneralUtils.getChanged(
-                        Permission.getPermissions(((Integer) change.getOldValue()).longValue()),
-                        Permission.getPermissions(((Integer) change.getNewValue()).longValue()));
+                        new ArrayList<>(Permission.getPermissions(((Integer) change.getOldValue()).longValue())),
+                        new ArrayList<>(Permission.getPermissions(((Integer) change.getNewValue()).longValue())));
                 if (permChanges.get(true).size() > 0) {
                     StringBuilder added = new StringBuilder();
                     for (Permission addedPerm : permChanges.get(true)) {
                         added.append(addedPerm.getName()).append("\n");
                     }
-                    permissionsBuilder.addField("Added Perms", "```\n" + added.toString() + "```", false);
+                    permissionsBuilder.addField("Added Perms", "```\n" + added + "```", false);
                 }
                 if (permChanges.get(false).size() > 0) {
                     StringBuilder removed = new StringBuilder();
                     for (Permission removedPerm : permChanges.get(false)) {
                         removed.append(removedPerm.getName()).append("\n");
                     }
-                    permissionsBuilder.addField("Removed Perms", "```\n" + removed.toString() + "```", false);
+                    permissionsBuilder.addField("Removed Perms", "```\n" + removed + "```", false);
                 }
             }
             if (changes.containsKey("name")) {
@@ -288,7 +290,7 @@ public class ModlogEvents implements EventListener {
 
     private void onGuildMemberRoleAdd(GuildMemberRoleAddEvent event, @Nonnull GuildWrapper wrapper) {
         if (cannotHandle(wrapper, ModlogEvent.MEMBER_ROLE_GIVE)) return;
-        event.getGuild().getAuditLogs().queue(auditLogEntries -> {
+        event.getGuild().retrieveAuditLogs().queue(auditLogEntries -> {
             if (auditLogEntries.isEmpty())
                 return;
             AuditLogEntry entry = auditLogEntries.get(0);
@@ -298,7 +300,7 @@ public class ModlogEvents implements EventListener {
             HashMap<String, String> role = ((ArrayList<HashMap<String, String>>) change.getNewValue()).get(0);
 
             if (wrapper.getAutoAssignRoles().contains(role.get("id"))
-                    && ((System.currentTimeMillis() / 1000) - event.getMember().getJoinDate().toEpochSecond()) < 10) {
+                    && ((System.currentTimeMillis() / 1000) - event.getMember().getTimeJoined().toEpochSecond()) < 10) {
                 return;
             }
 
@@ -310,7 +312,7 @@ public class ModlogEvents implements EventListener {
 
     private void onGuildMemberRoleRemove(GuildMemberRoleRemoveEvent event, @Nonnull GuildWrapper wrapper) {
         if (cannotHandle(wrapper, ModlogEvent.MEMBER_ROLE_REMOVE)) return;
-        event.getGuild().getAuditLogs().queue(auditLogEntries -> {
+        event.getGuild().retrieveAuditLogs().queue(auditLogEntries -> {
             if (auditLogEntries.isEmpty())
                 return;
             AuditLogEntry entry = auditLogEntries.get(0);
@@ -359,7 +361,7 @@ public class ModlogEvents implements EventListener {
 
     private void onMessageDelete(MessageDeleteEvent event, @Nonnull GuildWrapper wrapper) {
         if (cannotHandle(wrapper, ModlogEvent.MESSAGE_DELETE)) return;
-        AuditLogEntry entry = event.getGuild().getAuditLogs().type(ActionType.MESSAGE_DELETE).complete().get(0);
+        AuditLogEntry entry = event.getGuild().retrieveAuditLogs().type(ActionType.MESSAGE_DELETE).complete().get(0);
         if (entry.getUser().isBot()) return;
         User responsible = null;
         if (FlareBot.instance().getEvents().getRemovedByMeList().contains(event.getMessageIdLong())) {
@@ -386,7 +388,7 @@ public class ModlogEvents implements EventListener {
 
     private void onGuildUpdateExplicitContentLevel(GuildUpdateExplicitContentLevelEvent e, @Nonnull GuildWrapper wrapper) {
         if (cannotHandle(wrapper, ModlogEvent.GUILD_EXPLICIT_FILTER_CHANGE)) return;
-        AuditLogEntry entry = e.getGuild().getAuditLogs().complete().get(0);
+        AuditLogEntry entry = e.getGuild().retrieveAuditLogs().complete().get(0);
         AuditLogChange levelChange = entry.getChanges().get("explicit_content_filter");
 
         ModlogHandler.getInstance().postToModlog(wrapper, ModlogEvent.GUILD_EXPLICIT_FILTER_CHANGE, entry.getUser(),
@@ -395,12 +397,12 @@ public class ModlogEvents implements EventListener {
     }
 
 
-    private void onGuildMemberNickChange(GuildMemberNickChangeEvent event, @Nonnull GuildWrapper wrapper) {
+    private void onGuildMemberNickChange(GuildMemberUpdateNicknameEvent event, @Nonnull GuildWrapper wrapper) {
         if (cannotHandle(wrapper, ModlogEvent.MEMBER_NICK_CHANGE)) return;
         ModlogHandler.getInstance().postToModlog(wrapper, ModlogEvent.MEMBER_NICK_CHANGE,
                 event.getMember().getUser(),
-                new MessageEmbed.Field("Previous nick", event.getPrevNick() != null ? event.getPrevNick() : event.getUser().getName(), true),
-                new MessageEmbed.Field("New nick", event.getNewNick() != null ? event.getNewNick() : event.getUser().getName(), true));
+                new MessageEmbed.Field("Previous nick", event.getOldNickname() != null ? event.getOldNickname() : event.getUser().getName(), true),
+                new MessageEmbed.Field("New nick", event.getNewNickname() != null ? event.getNewNickname() : event.getUser().getName(), true));
     }
 
     private void onGenericGuildUpdate(GenericGuildUpdateEvent event, @Nonnull GuildWrapper wrapper) {
@@ -412,7 +414,7 @@ public class ModlogEvents implements EventListener {
             return;
         }
         guildResponseNumber = event.getResponseNumber();
-        event.getGuild().getAuditLogs().limit(1).queue(auditLogs -> {
+        event.getGuild().retrieveAuditLogs().limit(1).queue(auditLogs -> {
             AuditLogEntry entry = auditLogs.get(0);
             Map<String, AuditLogChange> changes = entry.getChanges();
 
@@ -498,9 +500,9 @@ public class ModlogEvents implements EventListener {
                         + event.getChannelJoined().getName() + "`", true));
     }
 
-    private void handleChannelCreate(GuildWrapper wrapper, Channel channel) {
+    private void handleChannelCreate(GuildWrapper wrapper, GuildChannel channel) {
         if (cannotHandle(wrapper, ModlogEvent.CHANNEL_CREATE)) return;
-        AuditLogEntry entry = wrapper.getGuild().getAuditLogs().complete().get(0);
+        AuditLogEntry entry = wrapper.getGuild().retrieveAuditLogs().complete().get(0);
         EmbedBuilder builder = new EmbedBuilder()
                 .addField("Type", channel.getType().name().toLowerCase(), true)
                 .addField("Name", channel.getName(), true);
@@ -511,10 +513,10 @@ public class ModlogEvents implements EventListener {
                 builder);
     }
 
-    private void handleChannelDelete(GuildWrapper wrapper, Channel channel) {
+    private void handleChannelDelete(GuildWrapper wrapper, GuildChannel channel) {
         if (wrapper == null) return;
         if (cannotHandle(wrapper, ModlogEvent.CHANNEL_DELETE)) return;
-        AuditLogEntry entry = wrapper.getGuild().getAuditLogs().complete().get(0);
+        AuditLogEntry entry = wrapper.getGuild().retrieveAuditLogs().complete().get(0);
         EmbedBuilder builder = new EmbedBuilder()
                 .addField("Type", channel.getType().name().toLowerCase(), true)
                 .addField("Name", channel.getName(), true);

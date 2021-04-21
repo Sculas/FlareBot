@@ -1,8 +1,8 @@
 package stream.flarebot.flarebot.util.votes;
 
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 import stream.flarebot.flarebot.Getters;
 
 import java.util.Collection;

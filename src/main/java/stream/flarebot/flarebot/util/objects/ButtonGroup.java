@@ -1,9 +1,9 @@
 package stream.flarebot.flarebot.util.objects;
 
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.ChannelType;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 import stream.flarebot.flarebot.Getters;
 import stream.flarebot.flarebot.util.buttons.ButtonRunnable;
 

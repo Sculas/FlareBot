@@ -2,8 +2,8 @@ package stream.flarebot.flarebot.util.currency;
 
 import com.google.gson.JsonSyntaxException;
 import io.github.binaryoverload.JSONConfig;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import okhttp3.Request;
 import okhttp3.Response;
 import stream.flarebot.flarebot.commands.Command;

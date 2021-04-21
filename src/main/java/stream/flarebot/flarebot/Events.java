@@ -1,34 +1,34 @@
 package stream.flarebot.flarebot;
 
 import io.prometheus.client.Histogram;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.MessageReaction;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.events.DisconnectEvent;
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.events.ReadyEvent;
-import net.dv8tion.jda.core.events.StatusChangeEvent;
-import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
-import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceMoveEvent;
-import net.dv8tion.jda.core.events.message.guild.GenericGuildMessageEvent;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
-import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
-import net.dv8tion.jda.core.events.user.update.UserUpdateOnlineStatusEvent;
-import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.MessageReaction;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.events.DisconnectEvent;
+import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.events.StatusChangeEvent;
+import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
+import net.dv8tion.jda.api.events.message.guild.GenericGuildMessageEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.events.role.RoleDeleteEvent;
+import net.dv8tion.jda.api.events.user.update.UserUpdateOnlineStatusEvent;
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import org.json.JSONObject;
@@ -59,12 +59,7 @@ import stream.flarebot.flarebot.util.votes.VoteUtil;
 import java.awt.Color;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -104,12 +99,11 @@ public class Events extends ListenerAdapter {
         if (event.getUser().isBot()) return;
         if (ButtonUtil.isButtonMessage(event.getMessageId())) {
             for (ButtonGroup.Button button : ButtonUtil.getButtonGroup(event.getMessageId()).getButtons()) {
-                if ((event.getReactionEmote() != null && event.getReactionEmote().isEmote()
-                        && event.getReactionEmote().getIdLong() == button.getEmoteId())
-                        || (button.getUnicode() != null && event.getReactionEmote().getName().equals(button.getUnicode()))) {
+                event.getReactionEmote();
+                if (event.getReactionEmote().isEmote() && event.getReactionEmote().getIdLong() == button.getEmoteId() || button.getUnicode() != null && event.getReactionEmote().getName().equals(button.getUnicode())) {
                     try {
                         if(event.getGuild().getSelfMember().hasPermission(event.getTextChannel(), Permission.MESSAGE_MANAGE)) {
-                            event.getChannel().getMessageById(event.getMessageId()).queue(message -> {
+                            event.getChannel().retrieveMessageById(event.getMessageId()).queue(message -> {
                                 for (MessageReaction reaction : message.getReactions()) {
                                     if (reaction.getReactionEmote().equals(event.getReactionEmote())) {
                                         reaction.removeReaction(event.getUser()).queue();
@@ -132,7 +126,7 @@ public class Events extends ListenerAdapter {
         }
         if (!FlareBotManager.instance().getGuild(event.getGuild().getId()).getBetaAccess()) return;
         if (!event.getReactionEmote().getName().equals("\uD83D\uDCCC")) return; // Check if it's a :pushpin:
-        event.getChannel().getMessageById(event.getMessageId()).queue(message -> {
+        event.getChannel().retrieveMessageById(event.getMessageId()).queue(message -> {
             MessageReaction reaction =
                     message.getReactions().stream().filter(r -> r.getReactionEmote().getName()
                             .equals(event.getReactionEmote().getName())).findFirst().orElse(null);
@@ -222,8 +216,10 @@ public class Events extends ListenerAdapter {
                 } else autoAssignRoles.remove(s);
             }
             try {
-                event.getGuild().getController().addRolesToMember(event.getMember(), roles).queue((n) -> {
-                }, e1 -> handle(e1, event, roles));
+                for (Role role : roles) {
+                    event.getGuild().addRoleToMember(event.getMember(), role).queue((n) -> {
+                    }, e1 -> handle(e1, event, roles));
+                }
                 StringBuilder sb = new StringBuilder("```\n");
                 for (Role role : roles) {
                     sb.append(role.getName()).append(" (").append(role.getId()).append(")\n");
@@ -256,13 +252,13 @@ public class Events extends ListenerAdapter {
     @Override
     public void onGuildJoin(GuildJoinEvent event) {
         if (event.getJDA().getStatus() == JDA.Status.CONNECTED &&
-                event.getGuild().getSelfMember().getJoinDate().plusMinutes(2).isAfter(OffsetDateTime.now())) {
+                event.getGuild().getSelfMember().getTimeJoined().plusMinutes(2).isAfter(OffsetDateTime.now())) {
             Constants.getGuildLogChannel().sendMessage(new EmbedBuilder()
                     .setColor(new Color(96, 230, 144))
                     .setThumbnail(event.getGuild().getIconUrl())
                     .setFooter(event.getGuild().getId(), event.getGuild().getIconUrl())
                     .setAuthor(event.getGuild().getName(), null, event.getGuild().getIconUrl())
-                    .setTimestamp(event.getGuild().getSelfMember().getJoinDate())
+                    .setTimestamp(event.getGuild().getSelfMember().getTimeJoined())
                     .setDescription("Guild Created: `" + event.getGuild().getName() + "` :smile: :heart:\n" +
                             "Guild Owner: " + event.getGuild().getOwner().getUser().getName() + "\nGuild Members: " +
                             event.getGuild().getMembers().size()).build()).queue();
@@ -338,14 +334,14 @@ public class Events extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         PlayerCache cache = flareBot.getPlayerCache(event.getAuthor().getId());
-        cache.setLastMessage(LocalDateTime.from(event.getMessage().getCreationTime()));
+        cache.setLastMessage(LocalDateTime.from(event.getMessage().getTimeCreated()));
         cache.setLastSeen(LocalDateTime.now());
         cache.setLastSpokeGuild(event.getGuild().getId());
 
         if (event.getAuthor().isBot()) return;
         String message = multiSpace.matcher(event.getMessage().getContentRaw()).replaceAll(" ");
         if (message.startsWith("" + FlareBotManager.instance().getGuild(getGuildId(event)).getPrefix())) {
-            List<Permission> perms = event.getChannel().getGuild().getSelfMember().getPermissions(event.getChannel());
+            EnumSet<Permission> perms = event.getChannel().getGuild().getSelfMember().getPermissions(event.getChannel());
             if (!perms.contains(Permission.ADMINISTRATOR)) {
                 if (!perms.contains(Permission.MESSAGE_WRITE)) {
                     return;

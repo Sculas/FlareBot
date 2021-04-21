@@ -1,7 +1,7 @@
 package stream.flarebot.flarebot.metrics;
 
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.hooks.EventListener;
+import net.dv8tion.jda.api.events.GenericEvent;
+import net.dv8tion.jda.api.hooks.EventListener;
 
 /**
  * This class is used in extension of the Metrics class, this will collect all the JDA events used and allow us to see
@@ -10,7 +10,7 @@ import net.dv8tion.jda.core.hooks.EventListener;
 public class JdaEventMetricsListener implements EventListener {
 
     @Override
-    public void onEvent(Event event) {
+    public void onEvent(GenericEvent event) {
         Metrics.jdaEvents.labels(event.getClass().getSimpleName()).inc();
     }
 }

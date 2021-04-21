@@ -1,7 +1,7 @@
 package stream.flarebot.flarebot.util.buttons;
 
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 
 public interface ButtonRunnable {
 

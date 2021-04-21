@@ -1,15 +1,12 @@
 package stream.flarebot.flarebot.util.general;
 
-import com.arsenarsen.lavaplayerbridge.player.Player;
-import com.arsenarsen.lavaplayerbridge.player.Track;
 import com.google.gson.JsonElement;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioItem;
 import io.github.binaryoverload.JSONConfig;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.exceptions.ErrorResponseException;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.Period;
 import org.joda.time.format.PeriodFormatter;
@@ -18,7 +15,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
 import stream.flarebot.flarebot.FlareBot;
-import stream.flarebot.flarebot.FlareBotManager;
 import stream.flarebot.flarebot.Getters;
 import stream.flarebot.flarebot.commands.Command;
 import stream.flarebot.flarebot.commands.CommandType;
@@ -27,7 +23,6 @@ import stream.flarebot.flarebot.objects.GuildWrapper;
 import stream.flarebot.flarebot.objects.Report;
 import stream.flarebot.flarebot.objects.ReportMessage;
 import stream.flarebot.flarebot.permissions.PerGuildPermissions;
-import stream.flarebot.flarebot.util.Constants;
 import stream.flarebot.flarebot.util.MessageUtils;
 import stream.flarebot.flarebot.util.Pair;
 import stream.flarebot.flarebot.util.errorhandling.Markers;
@@ -37,7 +32,6 @@ import java.awt.Color;
 import java.io.*;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -121,7 +115,7 @@ public class GeneralUtils {
      * @return A string representing the current page out of the total pages which was calculated from the items and page length.
      */
     public static String getPageOutOfTotal(int page, List<?> items, int pageLength) {
-        return page + "/" + String.valueOf(items.size() < pageLength ? 1 : (items.size() / pageLength) + (items.size() % pageLength != 0 ? 1 : 0));
+        return page + "/" + (items.size() < pageLength ? 1 : (items.size() / pageLength) + (items.size() % pageLength != 0 ? 1 : 0));
     }
 
     /**
@@ -311,7 +305,7 @@ public class GeneralUtils {
                 message.getChannel().getId(),
                 message.getGuild().getId(),
                 message.getContentRaw(),
-                message.getCreationTime().toInstant().toEpochMilli()
+                message.getTimeCreated().toInstant().toEpochMilli()
         ));
     }
 

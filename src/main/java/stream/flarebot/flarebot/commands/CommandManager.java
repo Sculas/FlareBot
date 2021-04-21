@@ -1,6 +1,6 @@
 package stream.flarebot.flarebot.commands;
 
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 import org.eclipse.jetty.util.ConcurrentHashSet;
 import org.slf4j.Logger;
 import stream.flarebot.flarebot.FlareBot;

@@ -1,14 +1,15 @@
 package stream.flarebot.flarebot.util;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import stream.flarebot.flarebot.FlareBot;
 import stream.flarebot.flarebot.Getters;
 import stream.flarebot.flarebot.commands.Command;
+
+import java.time.Clock;
+import java.time.LocalDateTime;
 
 public class Constants {
 
