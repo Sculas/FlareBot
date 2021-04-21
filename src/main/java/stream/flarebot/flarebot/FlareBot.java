@@ -346,7 +346,7 @@ public class FlareBot {
             shardManager = new DefaultShardManagerBuilder()
                     .addEventListeners(events)
                     .addEventListeners(new ModlogEvents())
-                    .addEventListeners(Metrics.instance().jdaEventMetricsListener)
+                    //.addEventListeners(Metrics.instance().jdaEventMetricsListener) TODO Disabled metrics for now
                     .addEventListeners(new NINOListener())
                     .setToken(config.getString("bot.token").get())
                     .setAudioSendFactory(new NativeAudioSendFactory())
@@ -390,7 +390,18 @@ public class FlareBot {
         // Any migration
         MigrationHandler migrationHandler = new MigrationHandler();
 
-        LOGGER.info("Loaded " + commandManager.count() + " commands!");
+        try {
+            if (commandManager == null) {
+                LOGGER.info("Waiting for CommandManager to finish registering all commands..");
+            }
+            while (commandManager == null) {
+                Thread.sleep(50);
+            }
+
+            LOGGER.info("Loaded " + commandManager.count() + " commands!");
+        } catch (Exception e) {
+            LOGGER.info("Uh oh, couldn't wait or fetch the CommandManager.");
+        }
 
         ApiFactory.bind();
         LOGGER.info("Bound API");
@@ -722,8 +733,10 @@ public class FlareBot {
     private WebhookClient getImportantWebhook() {
         if (!config.getString("bot.importantHook").isPresent())
             return null;
-        if (importantHook == null)
-            importantHook = new WebhookClientBuilder(config.getString("bot.importantHook").get()).build();
+        if (importantHook == null) {
+            String[] split = config.getString("bot.importantHook").get().split("/");
+            importantHook = new WebhookClientBuilder(Long.parseLong(split[split.length-2]), split[split.length-1]).build();
+        }
         return importantHook;
     }
 
@@ -810,7 +823,7 @@ public class FlareBot {
 
                 if (!deadShards.isEmpty()) {
                     getImportantWebhook().send("Found " + deadShards.size() + " possibly dead shards! Shards: " +
-                            deadShards.toString());
+                            deadShards);
                 }
             }
         }.repeat(TimeUnit.MINUTES.toMillis(10), TimeUnit.MINUTES.toMillis(5));

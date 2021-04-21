@@ -84,15 +84,15 @@ public class Events extends ListenerAdapter {
     private final Pattern multiSpace = Pattern.compile(" {2,}");
     private final Pattern rip = Pattern.compile("\\brip( [a-zA-Z0-9]+)?\\b", Pattern.CASE_INSENSITIVE);
 
-    private FlareBot flareBot;
+    private final FlareBot flareBot;
 
-    private Map<String, Integer> spamMap = new ConcurrentHashMap<>();
+    private final Map<String, Integer> spamMap = new ConcurrentHashMap<>();
 
     private final Map<Integer, Long> shardEventTime = new HashMap<>();
     private final AtomicInteger commandCounter = new AtomicInteger(0);
 
-    private Map<Long, Double> maxButtonClicksPerSec = new HashMap<>();
-    private Map<Long, List<Double>> buttonClicksPerSec = new HashMap<>();
+    private final Map<Long, Double> maxButtonClicksPerSec = new HashMap<>();
+    private final Map<Long, List<Double>> buttonClicksPerSec = new HashMap<>();
 
     Events(FlareBot bot) {
         this.flareBot = bot;
@@ -613,11 +613,11 @@ public class Events extends ListenerAdapter {
                         event.getAuthor().getName() + '#' + event.getAuthor().getDiscriminator(), ex);
             }
 
-            if ((guild.hasBetaAccess() && cmd.deleteMessage() && guild.getSettings().shouldDeleteCommands())
-                    || cmd.deleteMessage()) {
-                delete(event.getMessage());
-                removedByMe.add(event.getMessageIdLong());
-            }
+            if (!cmd.deleteMessage()) return;
+            if (guild.hasBetaAccess() && !guild.getSettings().shouldDeleteCommands()) return;
+
+            delete(event.getMessage());
+            removedByMe.add(event.getMessageIdLong());
         });
     }
 

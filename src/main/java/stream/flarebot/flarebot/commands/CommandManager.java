@@ -25,9 +25,10 @@ import java.util.stream.Collectors;
 public class CommandManager {
 
     private final Set<Command> commands = new ConcurrentHashSet<>();
-    private final Logger LOGGER = FlareBot.getLog(CommandManager.class);
 
     public CommandManager() {
+        Logger LOGGER = FlareBot.getLog(CommandManager.class);
+
         int start = count();
         registerMusicCommands();
         LOGGER.info("[Command Manager] Loaded " + (count() - start) + " music commands!");
@@ -47,7 +48,6 @@ public class CommandManager {
         start = count();
         registerMiscCommands();
         LOGGER.info("[Command Manager] Loaded " + (count() - start) + " misc commands!");
-
     }
 
     // https://bots.are-pretty.sexy/214501.png
@@ -142,7 +142,7 @@ public class CommandManager {
         registerCommand(new QuitCommand());
         registerCommand(new UpdateCommand());
         registerCommand(new LogsCommand());
-        registerCommand(new EvalCommand());
+        //registerCommand(new EvalCommand());
         registerCommand(new ChangeAvatarCommand());
         registerCommand(new ShardRestartCommand());
         registerCommand(new QueryCommand());

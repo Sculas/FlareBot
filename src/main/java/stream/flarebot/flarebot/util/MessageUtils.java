@@ -129,24 +129,18 @@ public class MessageUtils {
 //            return null;
 //        }
         try {
-            // TODO add local hastebin instance
-            Response response = WebUtils.request(new Request.Builder().url("https://hastebin.com/documents")
+            Response response = WebUtils.request(new Request.Builder().url("https://pastie.io/documents")
                     .post(RequestBody.create(WebUtils.APPLICATION_JSON, trace)));
             ResponseBody body = response.body();
             if (!response.isSuccessful()) {
-                if (body != null) {
-                    System.out.println("Body:");
-                    System.out.println(body.string());
-                }
                 return "ERROR";
-                //throw new IOException("Unexpected code " + response);
             }
             if (body != null) {
                 String key = new JSONObject(body.string()).getString("key");
                 body.close();
-                return "https://hastebin.com/" + key;
+                return "https://pastie.io/" + key;
             } else {
-                FlareBot.LOGGER.error("hastebin.com is down?");
+                FlareBot.LOGGER.error("pastie.io is down?");
                 return null;
             }
         } catch (IOException | JSONException e) {

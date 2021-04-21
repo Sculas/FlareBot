@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class YouTubeExtractor implements Extractor {
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
     public static final String PLAYLIST_URL = "https://www.youtube.com/playlist?list=";
     public static final String WATCH_URL = "https://www.youtube.com/watch?v=";

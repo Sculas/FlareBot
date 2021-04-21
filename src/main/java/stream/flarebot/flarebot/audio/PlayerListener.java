@@ -22,7 +22,7 @@ import stream.flarebot.flarebot.util.votes.VoteUtil;
 
 public class PlayerListener extends AudioEventAdapter {
 
-    private Player player;
+    private final Player player;
 
     public PlayerListener(Player player) {
         this.player = player;

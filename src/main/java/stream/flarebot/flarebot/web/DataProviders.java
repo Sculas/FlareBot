@@ -11,7 +11,7 @@ import stream.flarebot.flarebot.web.objects.Songs;
 
 public enum DataProviders {
     SONGS((req, res) -> Songs.get()),
-    GETPERMISSIONS((request, response) -> FlareBotManager.instance().getGuild(Getters.getChannelById(request.queryParams("guildid")).getGuild().getId())
+    GETPERMISSIONS((request, response) -> FlareBotManager.instance().getGuild(request.queryParams("guildid"))
             .getPermissions(),
             new Require("guildid", gid -> Getters.getGuildById(gid) != null));
 

@@ -19,8 +19,8 @@ public class ShardRestartCommand implements InternalCommand {
         if (PerGuildPermissions.isAdmin(sender)) {
             int shard = Integer.parseInt(args[0]);
             if (shard >= 0 && shard < Getters.getShards().size()) {
-                FlareBot.instance().getShardManager().restart(shard);
                 MessageUtils.sendSuccessMessage("Restarting shard " + shard, channel);
+                FlareBot.instance().getShardManager().restart(shard);
             } else
                 MessageUtils.sendErrorMessage("Invalid shard ID!", channel);
         }

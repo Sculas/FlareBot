@@ -13,6 +13,7 @@ import stream.flarebot.flarebot.commands.Command;
 import stream.flarebot.flarebot.commands.CommandType;
 import stream.flarebot.flarebot.objects.GuildWrapper;
 import stream.flarebot.flarebot.permissions.Permission;
+import stream.flarebot.flarebot.util.Constants;
 import stream.flarebot.flarebot.util.MessageUtils;
 import stream.flarebot.flarebot.util.general.GeneralUtils;
 import stream.flarebot.flarebot.util.implementations.MultiSelectionContent;
@@ -27,8 +28,8 @@ public class InfoCommand implements Command {
         if (args.length == 0) {
             EmbedBuilder bld = MessageUtils.getEmbed()
                     .setThumbnail(MessageUtils.getAvatar(channel.getJDA().getSelfUser()))
-                    .setFooter("Made by Walshy#9060 and BinaryOverload#2382", channel.getJDA().getSelfUser().getEffectiveAvatarUrl());
-            bld.setDescription("FlareBot v" + FlareBot.getVersion() + " info")
+                    .setFooter("Maintained by Lucas#3456", channel.getJDA().getSelfUser().getEffectiveAvatarUrl())
+                    .setDescription("FlareBot v" + FlareBot.getVersion() + " Information")
                     .setColor(Color.CYAN);
             for (Content content : Content.values) {
                 bld.addField(content.getName(), content.getReturn(), content.isAlign());
@@ -72,18 +73,12 @@ public class InfoCommand implements Command {
         SOURCE("Source", "[`GitHub`](https://github.com/Sculas/FlareBot)"),
         INVITE("Invite", String.format("[`Invite`](%s)", FlareBot.getInvite())),
         EMPTY("\u200B", "\u200B", false),
-        SUPPORT_SERVER("Support Server", "[`Discord`](https://flarebot.stream/support-server)"),
-        WEBSITE("Website", "[`FlareBot`](http://flarebot.stream/)"),
-        PATREON("Our Patreon", "[`Patreon`](https://www.patreon.com/flarebot)"),
-        DONATIONS("Donate", "[`PayPal`](https://www.paypal.me/walshydev/)"),
-        TWITTER("Twitter", "[`Twitter`](https://twitter.com/DiscordFlareBot)"),
-        TWITCH("Twitch", "[`Twitch`](https://twitch.tv/discordflarebot)");
-        //EMPTY_1("\u200B", "\u200B", false),
-        //MADE_BY("Originally Made By", "Walshy#9060 and Arsen#7525"),
-        //DEVELOPERS("Current Developers", "Walshy#9060 and BinaryOverload#2382");
+        SUPPORT_SERVER("Support Server", Constants.INVITE_MARKDOWN),
+        MADE_BY("Made by: ", "Walshy, Arsen, BinaryOverload"),
+        MAINTAINED_BY("Maintained by:", "Lucas#3456");
 
-        private String name;
-        private Supplier<String> returns;
+        private final String name;
+        private final Supplier<String> returns;
         private boolean align = true;
 
         public static Content[] values = values();

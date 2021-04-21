@@ -69,7 +69,7 @@ public class Metrics {
 
     public static final Counter failedRestActions = Counter.build()
             .name("flarebot_rest_actions_total")
-            .help("Total number of failed restactions executed by FlareBot")
+            .help("Total number of failed REST actions executed by FlareBot")
             .labelNames("error_response_code") // Use the error response code eg 50001, 50007 etc
             .register();
 
